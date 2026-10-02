@@ -1,0 +1,1296 @@
+﻿CODE: 
+
+
+import numpy as np  
+import matplotlib.pyplot as plt  
+
+
+# Define a simple linear neural network model (y = Wx + b)  
+class SimpleLinearNN:  
+
+
+def __init__(self, input_size, output_size, learning_rate=0.01):  
+# Initialize weights (W) and bias (b) randomly  
+self.W = np.random.randn(input_size, output_size)  
+self.b = np.zeros((1, output_size))  
+self.lr = learning_rate  
+self.loss_history = []  
+
+
+def forward(self, X):  
+"""Compute output y = XW + b"""  
+return np.dot(X, self.W) + self.b  
+
+
+def compute_loss(self, y_pred, y_true):  
+"""Mean Squared Error"""  
+return np.mean((y_pred - y_true) ** 2)  
+
+
+def backward(self, X, y_true, y_pred):  
+"""Update weights using gradient descent"""  
+m = X.shape[0] # number of samples  
+
+
+dW = (2 / m) * np.dot(X.T, (y_pred - y_true))  
+db = (2 / m) * np.sum(y_pred - y_true, axis=0, keepdims=True)  
+
+
+# Update parameters  
+self.W -= self.lr * dW  
+self.b -= self.lr * db  
+
+
+def train(self, X, y, epochs=100):  
+"""Training loop"""  
+for epoch in range(epochs):  
+
+
+# Forward pass  
+y_pred = self.forward(X)  
+
+
+# Compute loss  
+loss = self.compute_loss(y_pred, y)  
+self.loss_history.append(loss)  
+
+
+# Backward pass  
+self.backward(X, y, y_pred)  
+
+
+# Print progress  
+if (epoch + 1) % 20 == 0:  
+
+
+print(f"Epoch {epoch+1}/{epochs}, Loss: {loss:.4f}")  
+
+
+def plot_loss(self):  
+"""Plot training loss over epochs"""  
+plt.plot(self.loss_history, label="Training Loss")  
+plt.xlabel("Epochs")  
+plt.ylabel("Loss (MSE)")  
+plt title("Loss Curve")  
+
+
+
+
+
+
+ 
+plt.title( Loss Curve )  
+plt.legend()  
+plt.show()  
+
+
+# Example usage  
+if __name__ == "__main__":  
+
+
+# Dummy training data: y = 2x + 1  
+X_train = np.array([[1], [2], [3], [4]])  
+y_train = np.array([[3], [5], [7], [9]])  
+
+
+# Create and train model  
+model = SimpleLinearNN(input_size=1, output_size=1, learning_rate=0.01)  
+model.train(X_train, y_train, epochs=100)  
+
+
+# Plot the loss curve  
+model.plot_loss()  
+
+
+# Test prediction  
+test_input = np.array([[5]])  
+predicted = model.forward(test_input)  
+
+
+print(f"Prediction for input 5: {predicted[0][0]:.2f}")  
+
+
+Epoch 20/100, Loss: 0.0599  
+Epoch 40/100, Loss: 0.0028  
+Epoch 60/100, Loss: 0.0025  
+Epoch 80/100, Loss: 0.0022  
+Epoch 100/100, Loss: 0.0019  
+
+
+ 
+Prediction for input 5: 11.08  
+
+
+
+
+
+
+ 
+
+
+#Practical 2 :Calculate the output of a neural net using both binary and bipolar 
+sigmoidal functions 
+
+
+ 
+CODE: 
+
+
+import numpy as np  
+
+
+# Binary sigmoid activation  
+def binary_sigmoid(x):  
+
+
+return 1 / (1 + np.exp(-x))  
+
+
+# Bipolar sigmoid activation  
+def bipolar_sigmoid(x):  
+
+
+return (1 - np.exp(-x)) / (1 + np.exp(-x))  
+
+
+# Neural network calculation  
+def neural_net_output(x, w, b):  
+
+
+# Net input  
+net = np.dot(x, w) + b  
+
+
+# Apply activation functions  
+out_binary = binary_sigmoid(net)  
+out_bipolar = bipolar_sigmoid(net)  
+
+
+return net, out_binary, out_bipolar  
+
+
+# Example  
+if __name__ == "__main__":  
+
+
+# Inputs  
+x = np.array([0.5, -1.5]) # Input vector  
+w 
+ = np.array([0.7, -1.2]) # Weights  
+b = 0.3 # Bias  
+
+
+net, out_binary, out_bipolar = neural_net_output(x, w, b)  
+ 
+
+
+print(f"Net input: {net:.4f}")  
+
+
+
+
+
+
+ 
+print(f"Binary Sigmoid Output: {out_binary:.4f}")  
+print(f"Bipolar Sigmoid Output: {out_bipolar:.4f}")  
+print(f Bipolar Sigmoid Output: {out bipolar: 4f} )  
+
+
+OUTPUT: 
+
+
+Net input: 2.4500  
+Binary Sigmoid Output: 0.9206  
+Bipolar Sigmoid Output: 0.8411  
+
+
+Start coding or generate with AI. 
+ 
+
+
+
+
+
+
+ 
+
+
+Practical 3 :Generate AND/NOT function using McCulloch-Pitts neural net.  
+ 
+ 
+ 
+CODE: 
+
+
+       import numpy as np  
+import matplotlib.pyplot as plt  
+
+
+# McCulloch-Pitts AND-NOT neuron  
+def mp_and_not(A, B, w1=1.0, w2=-1.0, theta=0.5):  
+
+
+net = w1 * A + w2 * B  
+return 1 if net >= theta else 0  
+
+
+print("A B | A AND NOT B")  
+print("-------------------")  
+
+
+for A in [0, 1]:  
+for B in [0, 1]:  
+
+
+output = mp_and_not(A, B)  
+print(f"{A} {B} | {output}")  
+
+
+# Step activation function  
+def step_function(net, theta=0.5):  
+
+
+return np.where(net >= theta, 1, 0)  
+
+
+# Generate inputs for plotting  
+net_inputs = np.linspace(-2, 2, 200)  
+outputs = step_function(net_inputs)  
+
+
+# Plot the step activation function  
+plt.figure(figsize=(6, 4))  
+plt.plot(net_inputs, outputs, label="Step Activation", color="blue")  
+plt.axvline(x=0.5, color="red", linestyle="--", label="Threshold = 0.5")  
+
+
+plt.title("McCulloch-Pitts Step Activation (AND-NOT)")  
+plt.xlabel("Net Input (Σ w.x)")  
+plt.ylabel("Neuron Output")  
+plt.ylim(-0.1, 1.1)  
+plt.grid(True)  
+plt.legend()  
+
+
+plt.show()  
+
+
+OUTPUT: 
+
+
+A B | A AND NOT B  
+-------------------  
+0 0 | 0  
+0 1 | 0  
+1 0 | 1  
+1 1 | 0  
+
+
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+PRACTICAl 4: Write a program to implement Hebb’s rule. 
+ 
+
+
+ 
+ 
+import numpy as np  
+
+
+# 1. Define the training data (Bipolar AND Gate)  
+# Inputs: [x1, x2]  
+X = np.array([  
+    [1, 1],  
+    [1, -1],  
+    [-1, 1],  
+    [-1, -1]  
+])  
+
+
+# Target outputs  
+# Target outputs  
+Y = np array([1 -1 -1 -1])  
+Y = np.array([1, -1, -1, -1])  
+
+
+# 2. Initialize weights and bias to zero  
+weights = np.zeros(X.shape[1])  
+bias = 0.0  
+
+
+print("Initial Weights:", weights)  
+print("Initial Bias:", bias)  
+print("-" * 40)  
+
+
+# 3. Apply Hebbian Learning Rule  
+# Formula:  
+# Δw_i = x_i * y -> w_new = w_old + x_i * y  
+# Δb = y         -> b_new = b_old + y  
+
+
+for i in range(len(X)):  
+    x = X[i]  
+    y = Y[i]  
+      
+    # Update weights and bias  
+    weights += x * y  
+    bias += y  
+      
+    print(f"Step {i+1} -> Input: {x}, Target: {y}")  
+    print(f"        Updated Weights: {weights}, Updated Bias: {bias}")  
+
+
+
+
+
+
+ 
+
+
+i t(" " * 40)  
+print("-" * 40)  
+print("Final Weights:", weights)  
+print("Final Bias:", bias)  
+
+
+# 4. Testing the trained model  
+print("\n--- Testing the Model ---")  
+for x in X:  
+    # Linear combination: net = sum(x_i * w_i) + b  
+    net_input = np.dot(x, weights) + bias  
+      
+    # Activation function (Sign function for bipolar output)  
+    output = 1 if net_input >= 0 else -1  
+    print(f"Input: {x} -> Predicted Output: {output}")  
+
+
+Initial Weights: [0. 0.]  
+Initial Bias: 0.0  
+----------------------------------------  
+Step 1 -> Input: [1 1], Target: 1  
+ Updated Weights: [1. 1.], Updated Bias: 1.0  
+Step 2 -> Input: [ 1 -1], Target: -1  
+ Updated Weights: [0. 2.], Updated Bias: 0.0  
+Step 3 -> Input: [-1 1], Target: -1  
+ Updated Weights: [1. 1.], Updated Bias: -1.0  
+Step 4 -> Input: [-1 -1], Target: -1  
+ Updated Weights: [2. 2.], Updated Bias: -2.0  
+----------------------------------------  
+Final Weights: [2. 2.]  
+Final Bias: -2.0  
+
+
+ 
+
+
+PRACTICAL 5 : Delta Rule Implementation  
+
+
+
+
+ 
+CODE: 
+ 
+
+
+import numpy as np  
+import numpy as np  
+X = np.array([[1, 0], [1, 1], [0, 1], [0, 0]])  
+# Target outputs  
+targets = np.array([1, 1, 0, 0])  
+
+
+# Initialize weights and bias randomly  
+weights = np.random.rand(2)  
+bias = np.random.rand(1)  
+learning_rate = 0.1  
+epochs = 100  
+
+
+print("Training using Delta Rule...")  
+
+
+for epoch in range(epochs):  
+    total_error = 0  
+    for i in range(len(X)):  
+        # Linear activation (weighted sum)  
+        output = np.dot(X[i], weights) + bias  
+          
+        # Calculate error  
+        error = targets[i] - output  
+        total_error += error**2  
+          
+        # Update weights and bias: weight = weight + learning_rate * error * input  
+        weights += learning_rate * error * X[i]  
+        bias += learning_rate * error  
+      
+    if (epoch + 1) % 20 == 0:  
+        # Fix: Convert numpy array to scalar for formatting  
+        mse = (total_error / len(X)).item()  
+        print(f"Epoch {epoch+1}, Mean Squared Error: {mse:.4f}")   
+print("\nFinal Weights:", weights)  
+print("Final Bias:", bias)  
+print("\nPredictions after training:")  
+for i in range(len(X)):  
+    pred = np.dot(X[i], weights) + bias  
+
+
+
+
+
+
+ 
+    print(f"Input: {X[i]}, Target: {targets[i]}, Predicted: {pred[0]:.4f}")  
+ 
+
+
+
+
+
+
+ 
+
+
+Practical 6 : Backpropagation using XOR gate 
+ 
+CODE: 
+ 
+
+
+import numpy as np  
+
+
+# Sigmoid activation function and its derivative  
+def sigmoid(x):  
+    return 1 / (1 + np.exp(-x))  
+
+
+def sigmoid_derivative(x):  
+    return x * (1 - x)  
+
+
+# XOR input and expected output  
+X = np.array([[0,0], [0,1], [1,0], [1,1]])  
+y = np.array([[0], [1], [1], [0]])  
+
+
+# Seed for reproducibility  
+np.random.seed(42)  
+
+
+# Initialize weights and biases  
+input_layer_neurons = 2  
+hidden_layer_neurons = 2  
+output_neurons = 1  
+
+
+# Weights  
+wh = np.random.uniform(size=(input_layer_neurons, hidden_layer_neurons))  
+bh = np.random.uniform(size=(1, hidden_layer_neurons))  
+wout = np.random.uniform(size=(hidden_layer_neurons, output_neurons))  
+bout = np.random.uniform(size=(1, output_neurons))  
+
+
+learning_rate = 0.5  
+epochs = 10000  
+
+
+# Training loop  
+# Training loop  
+for epoch in range(epochs):  
+    # Forward Prop  
+    hidden_layer_input = np.dot(X, wh) + bh  
+    hidden_layer_activations = sigmoid(hidden_layer_input)  
+      
+    output_layer_input = np.dot(hidden_layer_activations, wout) + bout  
+    output = sigmoid(output_layer_input)  
+
+
+
+
+
+
+ 
+      
+    # Backpropagation  
+    error = y - output  
+    d_output = error * sigmoid_derivative(output)  
+      
+    error_hidden_layer = d_output.dot(wout.T)  
+    d_hidden_layer = error_hidden_layer * sigmoid_derivative(hidden_layer_activations)  
+      
+    # Updating Weights and Biases  
+    wout += hidden_layer_activations.T.dot(d_output) * learning_rate  
+    bout += np.sum(d_output, axis=0, keepdims=True) * learning_rate  
+    wh += X.T.dot(d_hidden_layer) * learning_rate  
+    bh += np.sum(d_hidden_layer, axis=0, keepdims=True) * learning_rate  
+
+
+print("Final Predictions:")  
+print(output) 
+ 
+
+
+OUTPUT:  
+Final Predictions:  
+[[0.01890475]  
+
+
+ [0.98371361]  
+ [0.98369334]  
+ [0.01686123]]  
+
+
+
+
+
+
+ 
+
+
+PRACTICAL 7: Radial Basis Function (RBF) Neural Network  
+
+
+ 
+CODE: 
+
+
+import numpy as np  
+import matplotlib.pyplot as plt  
+
+
+class RBFNetwork:  
+    def __init__(self, num_centers, sigma=1.0):  
+        self.num_centers = num_centers  
+        self.sigma = sigma  
+        self.centers = None  
+        self.weights = None  
+
+
+    def _gaussian_rbf(self, x, center):  
+        return np.exp(-np.linalg.norm(x - center)**2 / (2 * self.sigma**2))  
+
+
+    def _calculate_interpolation_matrix(self, X):  
+        G = np.zeros((X.shape[0], self.num_centers))  
+        for i, x in enumerate(X):  
+            for j, c in enumerate(self.centers):  
+                G[i, j] = self._gaussian_rbf(x, c)  
+        return G  
+
+
+    def fit(self, X, y):  
+        # Randomly choose centers from the training data  
+        random_indices = np.random.choice(X.shape[0], self.num_centers, replace=False)  
+        self.centers = X[random_indices]  
+          
+        # Calculate the interpolation matrix  
+        G = self._calculate_interpolation_matrix(X)  
+          
+        # Solve for weights using the Moore-Penrose pseudo-inverse  
+        self.weights = np.dot(np.linalg.pinv(G), y)  
+
+
+g p ( p g p ( ), y)  
+
+
+    def predict(self, X):  
+        G = self._calculate_interpolation_matrix(X)  
+        return np.dot(G, self.weights)  
+
+
+# Sample Data: Sinusoidal function  
+X_train = np.linspace(-5, 5, 20).reshape(-1, 1)  
+y_train = np.sin(X_train)  
+
+
+# Initialize and train RBF Network  
+rbf_net = RBFNetwork(num_centers=10, sigma=1.0)  
+rbf_net.fit(X_train, y_train)  
+
+
+
+
+
+
+ 
+
+
+# Prediction  
+X_test = np.linspace(-5, 5, 100).reshape(-1, 1)  
+y_pred = rbf_net.predict(X_test)  
+
+
+# Visualization  
+plt.figure(figsize=(10, 5))  
+plt.scatter(X_train, y_train, color='red', label='Training Points')  
+plt.plot(X_test, y_pred, label='RBF Interpolation', color='blue')  
+plt.title('Radial Basis Function Network Approximation')  
+plt.legend()  
+plt.show()  
+
+
+ 
+OUTPUT: 
+ 
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+PRACTICAL 8: Write a simple Python program to implement 
+
+
+ 
+1. Time Delay Neural Network (TDNN)  
+
+
+import numpy as np  
+import numpy as np  
+
+
+def create_tdnn_dataset(data, delay):  
+    X, y = [], []  
+    for i in range(len(data) - delay):  
+        X.append(data[i:(i + delay)])  
+        y.append(data[i + delay])  
+    return np.array(X), np.array(y)  
+
+
+# Example: Predicting a simple sequence  
+series = np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])  
+delay = 3  
+X_train, y_train = create_tdnn_dataset(series, delay)  
+
+
+# Simple weights for demonstration  
+np.random.seed(1)  
+weights = np.random.rand(delay)  
+bias = np.random.rand(1)  
+
+
+# Prediction (Forward Pass)  
+def predict_tdnn(X, w, b):  
+    return np.dot(X, w) + b  
+
+
+preds = predict_tdnn(X_train, weights, bias)  
+print("TDNN Inputs (windows):\n", X_train)  
+print("TDNN Predictions:\n", preds)  
+
+
+ 
+
+
+OUTPUT : 
+TDNN Inputs (windows):  
+ [[0.1 0.2 0.3]  
+ [0.2 0.3 0.4]  
+ [0.3 0.4 0.5]  
+ [0.4 0.5 0.6]  
+ [0.5 0.6 0.7]  
+ [0.6 0.7 0.8]]  
+TDNN Predictions:  
+ [0.48813398 0.60188007 0.71562616 0.82937225 0.94311833 1.05686442]  
+
+
+
+
+
+
+ 
+
+
+2. Functional Link Neural Network (FLNN)  
+ 
+def functional_expansion(X):  
+    # Expanding using [x, sin(pi*x), cos(pi*x)]  
+    expansion = [X, np.sin(np.pi * X), np.cos(np.pi * X)]  
+    return np.hstack(expansion)  
+
+
+# Input data  
+X_flnn = np.array([[0.1], [0.5], [0.9]])  
+
+
+# Expand features  
+X_expanded = functional_expansion(X_flnn)  
+
+
+# Single layer weights (for 3 expanded features)  
+flnn_weights = np.random.rand(3, 1)  
+flnn_bias = np.random.rand(1)  
+
+
+# Forward Pass  
+flnn_output = np.dot(X_expanded, flnn_weights) + flnn_bias  
+
+
+print("Original Input:\n", X_flnn)  
+print("Expanded Features:\n", X_expanded)  
+print("FLNN Output:\n", flnn_output)  
+
+
+ 
+OUTPUT: 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+PRACTICAL 9: Associative Memory Networks  
+
+
+ 
+
+
+CODE: 
+
+
+import numpy as np  
+
+
+def activation(x):  
+    return np.where(x >= 0, 1, -1)  
+
+
+# 1. Auto-associative Network  
+print("--- Auto-associative Network ---")  
+pattern = np.array([1, 1, -1, -1])  
+# Weight matrix W = x^T * x  
+weights_auto = np.outer(pattern, pattern)  
+np.fill_diagonal(weights_auto, 0) # Common practice to zero diagonal  
+
+
+test_pattern = np.array([1, 1, 1, -1]) # Noisy version  
+retrieved = activation(np.dot(test_pattern, weights_auto))  
+print(f"Original:  {pattern}")  
+print(f"Noisy Input: {test_pattern}")  
+print(f"Retrieved: {retrieved}")  
+
+
+# 2. Hetero-associative Network  
+print("\n--- Hetero-associative Network ---")  
+x_pattern = np.array([1, -1, 1])  
+y_pattern = np.array([1, 1, -1, -1])  
+# Weight matrix W = x^T * y  
+weights_hetero = np.outer(x_pattern, y_pattern)  
+
+
+test_x = np.array([1, -1, -1]) # Noisy input  
+retrieved_y = activation(np.dot(test_x, weights_hetero))  
+print(f"Target Y:    {y_pattern}")  
+print(f"Retrieved Y: {retrieved_y}")  
+
+
+# 3. Bi-directional Associative Memory (BAM)  
+print("\n--- BAM Network ---")  
+A np array([1 1 1])  
+A = np.array([1, 1, -1])  
+B = np.array([1, -1, 1, -1])  
+W_bam = np.outer(A, B)  
+
+
+# Retrieve B from A  
+retrieved_B = activation(np.dot(A, W_bam))  
+
+
+
+
+
+
+ 
+# Retrieve A from B  
+retrieved_A = activation(np.dot(B, W_bam.T))  
+
+
+print(f"Stored A: {A}, Stored B: {B}")  
+print(f"A -> B: {retrieved_B}")  
+print(f"B -> A: {retrieved_A}") 
+
+
+ 
+
+
+
+
+ 
+
+
+PRACTICAL 10: What is a Hopfield Network? 
+
+
+ 
+CODE: 
+
+
+import numpy as np  
+
+
+class HopfieldNetwork:  
+    def __init__(self, size):  
+        self.size = size  
+        self.weights = np.zeros((size, size))  
+
+
+    def train(self, patterns):  
+        """  
+        Train network on given patterns using Hebbian learning.  
+        patterns: list or array of binary patterns (-1, 1)  
+        """  
+        for p in patterns:  
+            p = p.reshape(self.size, 1)  
+            self.weights += p @ p.T  
+
+
+        np.fill_diagonal(self.weights, 0)  # no self-connection  
+
+
+    def predict(self, pattern, max_iterations=10):  
+        """  
+        Recall a pattern from the network.  
+        pattern: initial input pattern (-1, 1)  
+        max_iterations: maximum updates before stopping  
+        """  
+        s = pattern.copy()  
+
+
+        for _ in range(max_iterations):  
+            for i in range(self.size):  
+                raw = np.dot(self.weights[i], s)  
+                s[i] = 1 if raw >= 0 else -1  
+
+
+        return s  
+
+
+# Example usage:  
+
+
+# Define training patterns (bipolar)  
+patterns = np.array([  
+
+
+[1 1 1 1]  
+    [1, -1, 1, -1],  
+    [-1, 1, -1, 1]  
+])  
+
+
+# Initialize network  
+net = HopfieldNetwork(size=4)  
+
+
+
+
+
+
+ 
+
+
+# Train network  
+net.train(patterns)  
+
+
+# Test recall with a noisy version of the first pattern  
+test_pattern = np.array([1, -1, -1, -1])  # noisy input  
+
+
+print("Original:", patterns[0])  
+print("Noisy Input:", test_pattern)  
+
+
+recalled = net.predict(test_pattern)  
+
+
+print("Recalled:", recalled)  
+print("Recalled:", recalled)  
+ 
+
+
+
+
+
+
+ 
+
+
+PRACTICAL 11: Travelling salesman problem by genetic algo 
+
+
+ 
+CODE: 
+ 
+
+
+import random  
+import numpy as np  
+import matplotlib.pyplot as plt  
+class City:  
+    def __init__(self, x=None, y=None):  
+        if x is None:  
+            self.x = int(random.random() * 100)  
+            self.y = int(random.random() * 100)  
+        else:  
+            self.x = x  
+            self.y = y  
+
+
+    def distance(self, city):  
+        return np.sqrt((self.x - city.x)**2 + (self.y - city.y)**2)  
+
+
+    def __repr__(self):  
+        return f"({self.x},{self.y})"  
+# ------------------------  
+# Fitness Class  
+# ------------------------  
+class Fitness:  
+    def __init__(self, route):  
+        self.route = route  
+        self.distance = 0  
+        self.fitness = 0.0  
+
+
+    def route_distance(self):  
+        if self.distance == 0:  
+            path_distance = 0  
+
+
+            for i in range(len(self.route)):  
+f it lf t [i]  
+
+
+                from_city = self.route[i]  
+                to_city = self.route[(i + 1) % len(self.route)]  # return to start  
+
+
+                path_distance += from_city.distance(to_city)  
+
+
+
+
+
+
+ 
+
+
+            self.distance = path_distance  
+
+
+        return self.distance  
+
+
+    def route_fitness(self):  
+        if self.fitness == 0:  
+            self.fitness = 1 / float(self.route_distance())  
+
+
+        return self.fitness  
+
+
+def create_route(city_list):  
+    return random.sample(city_list, len(city_list))  
+
+
+def initial_population(pop_size, city_list):  
+    return [create_route(city_list) for _ in range(pop_size)]  
+
+
+def rank_routes(population):  
+    fitness_results = {}  
+
+
+    for i, route in enumerate(population):  
+        fitness_results[i] = Fitness(route).route_fitness()  
+
+
+    return sorted(  
+        fitness_results.items(),  
+        key=lambda x: x[1],  
+        reverse=True  
+    )  
+def selection(ranked_pop, elite_size):  
+    selection_results = []  
+
+
+    df = sum([fitness for _, fitness in ranked_pop])  
+    cum_sum = np.cumsum(  
+        [fitness for _, fitness in ranked_pop]  
+    ) / df  
+
+
+    # Keep elites  
+    for i in range(elite_size):  
+        selection_results.append(ranked_pop[i][0])  
+
+
+    # Roulette wheel selection  
+    for _ in range(len(ranked_pop) - elite_size):  
+        pick = random.random()  
+
+
+        for i, cs in enumerate(cum_sum):  
+            if pick <= cs:  
+                selection_results.append(ranked_pop[i][0])  
+                break  
+
+
+    return selection_results  
+
+
+def mating_pool(population, selection_results):  
+    return [population[i] for i in selection_results]  
+
+
+
+
+
+
+ 
+
+
+def breed(parent1, parent2):  
+    child = []  
+
+
+    start, end = sorted([  
+        random.randint(0, len(parent1) - 1)  
+        for _ in range(2)  
+    ])  
+
+
+    child_p1 = parent1[start:end]  
+    child_p2 = [item for item in parent2 if item not in child_p1]  
+
+
+    child = child_p1 + child_p2  
+
+
+    return child  
+
+
+def breed_population(matingpool, elite_size):  
+    children = []  
+
+
+    length = len(matingpool) - elite_size  
+    pool = random.sample(matingpool, len(matingpool))  
+
+
+    # Keep elites  
+    for i in range(elite_size):  
+        children.append(matingpool[i])  
+
+
+    # Breed the rest  
+    for i in range(length):  
+        child = breed(  
+            pool[i],  
+            pool[len(matingpool) - i - 1]  
+        )  
+        children.append(child)  
+
+
+    return children  
+
+
+def mutate(individual, mutation_rate=0.01):  
+    for swapped in range(len(individual)):  
+
+
+        if random.random() < mutation_rate:  
+            swap_with = int(  
+                random.random() * len(individual)  
+            )  
+
+
+            individual[swapped], individual[swap_with] = (  
+                individual[swap_with],  
+                individual[swapped]  
+            )  
+
+
+    return individual  
+
+
+def mutate_population(population, mutation_rate):  
+    return [  
+        mutate(ind, mutation_rate)  
+        for ind in population  
+    ]  
+
+
+
+
+
+
+ 
+
+
+def next_generation(current_gen, elite_size, mutation_rate):  
+    ranked_pop = rank_routes(current_gen)  
+
+
+    selection_results = selection(  
+        ranked_pop,  
+        elite_size  
+    )  
+
+
+    matingpool = mating_pool(  
+        current_gen,  
+        selection_results  
+    )  
+
+
+    children = breed_population(  
+        matingpool,  
+        elite_size  
+    )  
+
+
+    next_gen = mutate_population(  
+        children,  
+        mutation_rate  
+    )  
+
+
+    return next_gen  
+
+
+def genetic_algorithm(  
+    city_list,  
+    pop_size,  
+    elite_size,  
+    mutation_rate,  
+    generations  
+):  
+    pop = initial_population(  
+        pop_size,  
+        city_list  
+    )  
+
+
+    print(  
+        "Initial shortest distance: "  
+        + str(1 / rank_routes(pop)[0][1])  
+    )  
+
+
+    for _ in range(generations):  
+        pop = next_generation(  
+            pop,  
+            elite_size,  
+            mutation_rate  
+        )  
+
+
+    print(  
+        "Final shortest distance: "  
+        + str(1 / rank_routes(pop)[0][1])  
+    )  
+
+
+    best_route_index = rank_routes(pop)[0][0]  
+    best_route = pop[best_route_index]  
+
+
+
+
+
+
+ 
+
+
+    return best_route  
+
+
+def plot_route(route):  
+    plt.figure(figsize=(6, 6))  
+
+
+    x = [city.x for city in route] + [route[0].x]  
+    y = [city.y for city in route] + [route[0].y]  
+
+
+    plt.plot(x, y, 'o-r')  
+    plt.title("Best Route Found by Genetic Algorithm")  
+
+
+plt xlabel("X")  
+    plt.xlabel( X )  
+    plt.ylabel("Y")  
+    plt.show()  
+
+
+if __name__ == "__main__":  
+
+
+    city_list = [City() for _ in range(20)]  # 20 random cities  
+
+
+    best = genetic_algorithm(  
+        city_list,  
+        pop_size=100,  
+        elite_size=20,  
+        mutation_rate=0.01,  
+        generations=200  
+    )  
+
+
+    print("Best Route:")  
+    print(best)  
+
+
+    # Plot the best route  
+ plot_route(best)  
+
+
+OUTPUT:  
+Initial shortest distance: 814.7248249252146  
+Final shortest distance: 403.2957357636698  
+Best Route:  
+[(99,49), (95,48), (78,44), (68,68), (77,86), (79,96), (13,92), (10,71), (20,52), (16,47), (15,11), (20,4), 
+
+
+
+
+
+
+ 
+
+
+(50,3), (5
